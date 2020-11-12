@@ -54,6 +54,7 @@ Configure miss: whether to restrict build to remote support
 Configure miss: whether to enable C++ exception support
 Configure miss: whether to load .debug_frame sections
 Configure miss: lzma_mf_is_supported in -llzma
+Configure miss: uncompress in -lz
 Configure miss: Intel compiler
 Configure miss: QCC compiler
 Configure miss: latex2man

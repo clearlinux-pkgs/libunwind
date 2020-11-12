@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x015A268A17D55FA4 (dade.watson@gmail.com)
 #
 Name     : libunwind
-Version  : 1.4.0
-Release  : 25
-URL      : http://download.savannah.gnu.org/releases/libunwind/libunwind-1.4.0.tar.gz
-Source0  : http://download.savannah.gnu.org/releases/libunwind/libunwind-1.4.0.tar.gz
-Source1  : http://download.savannah.gnu.org/releases/libunwind/libunwind-1.4.0.tar.gz.sig
+Version  : 1.5.0
+Release  : 26
+URL      : http://download.savannah.gnu.org/releases/libunwind/libunwind-1.5.0.tar.gz
+Source0  : http://download.savannah.gnu.org/releases/libunwind/libunwind-1.5.0.tar.gz
+Source1  : http://download.savannah.gnu.org/releases/libunwind/libunwind-1.5.0.tar.gz.sig
 Summary  : libunwind base library
 Group    : Development/Tools
 License  : MIT
@@ -21,7 +21,9 @@ BuildRequires : gcc-libstdc++32
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : libatomic_ops-dev
+BuildRequires : pkgconfig(zlib)
 BuildRequires : xz-dev
+BuildRequires : zlib-dev
 
 %description
 # libunwind
@@ -75,10 +77,10 @@ license components for the libunwind package.
 
 
 %prep
-%setup -q -n libunwind-1.4.0
-cd %{_builddir}/libunwind-1.4.0
+%setup -q -n libunwind-1.5.0
+cd %{_builddir}/libunwind-1.5.0
 pushd ..
-cp -a libunwind-1.4.0 build32
+cp -a libunwind-1.5.0 build32
 popd
 
 %build
@@ -89,7 +91,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1589910296
+export SOURCE_DATE_EPOCH=1605220807
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -114,10 +116,10 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1589910296
+export SOURCE_DATE_EPOCH=1605220807
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libunwind
-cp %{_builddir}/libunwind-1.4.0/COPYING %{buildroot}/usr/share/package-licenses/libunwind/392f6897a0ce718eb8a6092915a520556a883d76
+cp %{_builddir}/libunwind-1.5.0/COPYING %{buildroot}/usr/share/package-licenses/libunwind/392f6897a0ce718eb8a6092915a520556a883d76
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
