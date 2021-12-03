@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x015A268A17D55FA4 (dade.watson@gmail.com)
 #
 Name     : libunwind
-Version  : 1.5.0
-Release  : 26
-URL      : http://download.savannah.gnu.org/releases/libunwind/libunwind-1.5.0.tar.gz
-Source0  : http://download.savannah.gnu.org/releases/libunwind/libunwind-1.5.0.tar.gz
-Source1  : http://download.savannah.gnu.org/releases/libunwind/libunwind-1.5.0.tar.gz.sig
+Version  : 1.6.2
+Release  : 27
+URL      : https://download.savannah.gnu.org/releases/libunwind/libunwind-1.6.2.tar.gz
+Source0  : https://download.savannah.gnu.org/releases/libunwind/libunwind-1.6.2.tar.gz
+Source1  : https://download.savannah.gnu.org/releases/libunwind/libunwind-1.6.2.tar.gz.sig
 Summary  : libunwind base library
 Group    : Development/Tools
 License  : MIT
@@ -20,7 +20,6 @@ BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
-BuildRequires : libatomic_ops-dev
 BuildRequires : pkgconfig(zlib)
 BuildRequires : xz-dev
 BuildRequires : zlib-dev
@@ -77,10 +76,10 @@ license components for the libunwind package.
 
 
 %prep
-%setup -q -n libunwind-1.5.0
-cd %{_builddir}/libunwind-1.5.0
+%setup -q -n libunwind-1.6.2
+cd %{_builddir}/libunwind-1.6.2
 pushd ..
-cp -a libunwind-1.5.0 build32
+cp -a libunwind-1.6.2 build32
 popd
 
 %build
@@ -91,15 +90,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1605220807
+export SOURCE_DATE_EPOCH=1638528988
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -107,7 +106,7 @@ pushd ../build32/
 ## build_prepend content
 CFLAGS="$CFLAGS -fcommon"
 ## build_prepend end
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -116,15 +115,21 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 %install
-export SOURCE_DATE_EPOCH=1605220807
+export SOURCE_DATE_EPOCH=1638528988
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libunwind
-cp %{_builddir}/libunwind-1.5.0/COPYING %{buildroot}/usr/share/package-licenses/libunwind/392f6897a0ce718eb8a6092915a520556a883d76
+cp %{_builddir}/libunwind-1.6.2/COPYING %{buildroot}/usr/share/package-licenses/libunwind/392f6897a0ce718eb8a6092915a520556a883d76
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi

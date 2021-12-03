@@ -1,5 +1,4 @@
-1.5.0
-libatomic_ops-dev
+1.6.2
 pkgconfig(zlib)
 xz-dev
 zlib-dev
